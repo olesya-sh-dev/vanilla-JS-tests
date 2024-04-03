@@ -1,12 +1,14 @@
 import {
   UserType,
   UserWithBooksType,
+  UserWithLapTopAndSkillsType,
   UserWithLapTopType,
   addNewBooksToUser,
   makeHairStyle,
   moveUser,
   moveUserToOtherHouse,
   updateBook,
+  updateSkillsLevel,
   upgradeUserLaptop,
 } from "./10_01";
 
@@ -148,4 +150,33 @@ test("update book", () => {
   expect(user.books.length).toBe(4);
   expect(userCopy.books.length).toBe(4);
   expect(userCopy.books[2]).toBe("ts");
+});
+
+test("update skillslevel", () => {
+  let user: UserWithLapTopAndSkillsType & UserWithBooksType = {
+    name: "Dimych",
+    hair: 32,
+    address: {
+      city: "Minsk",
+      house: 12,
+    },
+    laptop: {
+      title: "ZenBook",
+    },
+    books: ["css", "html", "js", "react"],
+    skills: [
+      { title: "CSS", level: 80 },
+      { title: "HTML", level: 90 },
+      { title: "JS", level: 70 },
+      { title: "React", level: 50 },
+    ],
+  };
+
+  const userCopy = updateSkillsLevel(user, "JS", 85);
+
+  expect(user).not.toBe(userCopy);
+  expect(user.laptop.title).toBe(userCopy.laptop.title);
+  expect(user.address).toBe(userCopy.address);
+  expect(user.skills[2].level).toBe(70);
+  expect(userCopy.skills[2].level).toBe(85);
 });
