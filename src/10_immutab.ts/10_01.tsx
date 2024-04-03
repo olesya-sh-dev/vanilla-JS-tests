@@ -23,6 +23,13 @@ export type SkillType = {
 export type UserWithLapTopAndSkillsType = UserWithLapTopType & {
   skills: SkillType[];
 };
+type CompanyType = {
+  id: number;
+  title: string;
+};
+export type WithCompaniesType = {
+  companies: CompanyType[];
+};
 
 export function makeHairStyle(u: UserType, power: number) {
   const copy = { ...u, hair: u.hair / power };
@@ -77,3 +84,42 @@ export function updateSkillsLevel(
     ),
   };
 }
+export function removeBook(
+  u: UserWithLapTopType & UserWithBooksType,
+  book: string
+) {
+  return { ...u, books: u.books.filter((b) => b !== book) };
+}
+
+export function addCompany(
+  u: UserWithLapTopType & WithCompaniesType,
+  newCompany: { id: number; title: string }
+) {
+  return { ...u, companies: [...u.companies, newCompany] };
+}
+
+export function updateCompanyTitle(
+  u: WithCompaniesType,
+  id: number,
+  newTitle: string
+) {
+  return {
+    ...u,
+    companies: u.companies.map((c) =>
+      c.id === id ? { ...c, title: newTitle } : c
+    ),
+  };
+}
+export const updateCompanyTitle2 = (
+  companies: { [key: string]: CompanyType[] },
+  userName: string,
+  companyId: number,
+  newTitle: string
+) => {
+  let companyCopy = { ...companies };
+
+  companyCopy[userName] = companyCopy[userName].map((c) =>
+    c.id === companyId ? { ...c, title: newTitle } : c
+  );
+  return companyCopy;
+};
